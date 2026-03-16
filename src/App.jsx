@@ -1,11 +1,16 @@
+import Footer from "./components/Footer/Footer";
+import Navbar from "./components/Navbar/Navbar";
+import AppRoutes from "./routes/AppRoutes";
+
 function App() {
   return (
-    <main className="wrap">
-      <p className="tag">Simple React + Vite App</p>
-      <h1>Nethmina Lakshan</h1>
-      <p className="text">Portfolio starter is ready. Edit this page and add your projects.</p>
-      <button type="button">Get Started</button>
-    </main>
+    <div className="page" id="top">
+      <Navbar />
+      <main>
+        <AppRoutes />
+      </main>
+      <Footer />
+    </div>
   );
 }
 

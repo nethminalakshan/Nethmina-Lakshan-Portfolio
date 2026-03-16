@@ -1,0 +1,32 @@
+.btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.65rem 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+}
+
+.btnPrimary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(124, 58, 237, 0.22);
+}
+
+.btnPrimary:hover {
+  background: var(--accent2);
+}
+
+.btnGhost {
+  background: #fff;
+  color: rgba(15, 23, 42, 0.92);
+  border: 1px solid var(--border);
+}
+
+.btnGhost:hover {
+  border-color: rgba(15, 23, 42, 0.18);
+}

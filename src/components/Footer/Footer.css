@@ -1,0 +1,41 @@
+.siteFooter {
+  margin-top: 1rem;
+  background: linear-gradient(180deg, var(--dark), var(--dark2));
+  color: rgba(255, 255, 255, 0.92);
+  padding: 1.6rem 0;
+}
+
+.footerInner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footerBrand .brandName {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.footerLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 700;
+}
+
+.footerLinks a:hover {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.footerCopy {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+@media (min-width: 820px) {
+  .footerInner {
+    flex-direction: row;
+  }
+}

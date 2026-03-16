@@ -1,0 +1,59 @@
+.siteHeader {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(12px);
+  background: rgba(246, 247, 251, 0.85);
+  border-bottom: 1px solid var(--border);
+}
+
+.navBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 0;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+}
+
+.brandMark {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.brandName {
+  letter-spacing: 0.2px;
+}
+
+.navLinks {
+  display: none;
+  gap: 1.2rem;
+  font-size: 0.95rem;
+  color: rgba(15, 23, 42, 0.72);
+}
+
+.navLinks a {
+  padding: 0.4rem 0.2rem;
+}
+
+.navLinks a:hover {
+  color: rgba(15, 23, 42, 0.92);
+}
+
+@media (min-width: 820px) {
+  .navLinks {
+    display: flex;
+  }
+}
