@@ -24,6 +24,21 @@ html {
   scroll-behavior: smooth;
 }
 
+.pageMain {
+  animation: pageEnter 420ms ease both;
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 body {
   margin: 0;
 }
@@ -173,6 +188,19 @@ h3 {
   border-radius: 26px;
   padding: 1.2rem;
   box-shadow: 0 22px 55px rgba(15, 23, 42, 0.18);
+  animation: floatSoft 6s ease-in-out infinite;
+}
+
+@keyframes floatSoft {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .heroCard img {
@@ -268,6 +296,13 @@ h3 {
   border-radius: 14px;
   padding: 1rem;
   box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.miniCard:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+  border-color: rgba(124, 58, 237, 0.18);
 }
 
 .sectionHead {
@@ -287,6 +322,13 @@ h3 {
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.10);
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.projectCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: rgba(124, 58, 237, 0.18);
 }
 
 .projectImg {
@@ -294,6 +336,11 @@ h3 {
   height: 180px;
   object-fit: cover;
   background: #f1f5f9;
+  transition: transform 320ms ease;
+}
+
+.projectCard:hover .projectImg {
+  transform: scale(1.02);
 }
 
 .projectBody {
@@ -350,6 +397,13 @@ h3 {
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.10);
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.blogCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: rgba(124, 58, 237, 0.18);
 }
 
 .blogImg {
@@ -542,5 +596,21 @@ h3 {
 
   .processCards {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .pageMain,
+  .heroCard,
+  .projectCard,
+  .blogCard,
+  .miniCard,
+  .projectImg {
+    animation: none !important;
+    transition: none !important;
   }
 }

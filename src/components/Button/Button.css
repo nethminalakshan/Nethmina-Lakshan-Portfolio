@@ -9,6 +9,16 @@
   justify-content: center;
   gap: 0.45rem;
   white-space: nowrap;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:focus-visible {
+  outline: 2px solid rgba(124, 58, 237, 0.35);
+  outline-offset: 3px;
 }
 
 .btnPrimary {

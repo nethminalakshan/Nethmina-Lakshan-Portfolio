@@ -3,27 +3,27 @@ import heroImg from "../../assets/images/picto/hero.png";
 
 export default function About() {
   return (
-    <section className="section" id="about">
+    <section className="section" aria-label="About">
       <div className="container">
         <div className="card aboutCard">
           <div className="aboutMedia">
             <img src={heroImg} alt="" width="420" height="420" loading="lazy" />
           </div>
           <div className="aboutBody">
-            <h2>I am a Professional UI/UX Designer</h2>
+            <h2>Computer Engineering Undergraduate</h2>
             <p className="muted">
-              I design and develop experiences for customers with a strong focus
-              on simplicity, clarity, and usability.
+              I’m focused on networking and embedded systems, with a practical
+              approach to building and documenting engineering projects.
             </p>
             <ul className="bullets">
-              <li>Design systems & responsive UI</li>
-              <li>React / Vite front-end development</li>
-              <li>Landing pages & portfolio sites</li>
+              <li>Networking fundamentals (TCP/IP, routing, troubleshooting)</li>
+              <li>Embedded systems (MCUs, sensors, real-time basics)</li>
+              <li>IEEE involvement, hackathons, and project collaboration</li>
             </ul>
             <div className="aboutActions">
-              <Button href="#portfolio">My Project</Button>
-              <Button href="#contact" variant="ghost">
-                Download CV
+              <Button to="/projects">View Projects</Button>
+              <Button to="/resume" variant="ghost">
+                Resume
               </Button>
             </div>
           </div>

@@ -1,25 +1,25 @@
 export default function Contact() {
   return (
-    <section className="section" id="contact">
+    <section className="section" aria-label="Contact">
       <div className="container">
         <div className="card contactCard">
           <div className="contactLeft">
-            <h2>Let’s discuss your Project</h2>
+            <h2>Contact</h2>
             <p className="muted">
-              Tell me a little about your idea and I’ll get back to you.
+              Feel free to reach out via email or connect on LinkedIn.
             </p>
             <div className="contactList">
-              <div>
-                <div className="contactLabel">Phone</div>
-                <div className="contactValue">+94 7X XXX XXXX</div>
-              </div>
               <div>
                 <div className="contactLabel">Email</div>
                 <div className="contactValue">you@example.com</div>
               </div>
               <div>
-                <div className="contactLabel">Location</div>
-                <div className="contactValue">Sri Lanka</div>
+                <div className="contactLabel">LinkedIn</div>
+                <div className="contactValue">linkedin.com/in/your-handle</div>
+              </div>
+              <div>
+                <div className="contactLabel">GitHub</div>
+                <div className="contactValue">github.com/your-handle</div>
               </div>
             </div>
           </div>
@@ -38,16 +38,10 @@ export default function Contact() {
                 placeholder="you@email.com"
               />
             </label>
-            <div className="fieldRow">
-              <label className="field">
-                <span>Budget</span>
-                <input type="text" name="budget" placeholder="$" />
-              </label>
-              <label className="field">
-                <span>Subject*</span>
-                <input type="text" name="subject" required placeholder="Subject" />
-              </label>
-            </div>
+            <label className="field">
+              <span>Subject*</span>
+              <input type="text" name="subject" required placeholder="Subject" />
+            </label>
             <label className="field">
               <span>Message*</span>
               <textarea
