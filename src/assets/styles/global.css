@@ -206,6 +206,10 @@ h3 {
 .heroCard img {
   border-radius: 22px;
   background: #fff;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
 }
 
 .stats {
