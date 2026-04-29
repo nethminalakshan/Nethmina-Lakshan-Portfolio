@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 import { fadeUp, stagger } from '../AboutSection/AboutSection';
 
 const SOCIALS = [
-  { label: 'GitHub',   href: 'https://github.com/',   icon: '⌥' },
-  { label: 'LinkedIn', href: 'https://linkedin.com/',  icon: '◈' },
-  { label: 'Email',    href: 'mailto:nethmina@email.com', icon: '✉' },
+  { label: 'GitHub',   href: 'https://github.com/nethminalakshan',   icon: '⌥' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/nethmina-lakshan-692a52247/',  icon: '◈' },
+  { label: 'Email',    href: 'mailto:nethminalakshan2018@gmail.com', icon: '✉' },
 ];
 
 function Field({ label, id, type = 'text', rows }) {
@@ -24,8 +24,10 @@ function Field({ label, id, type = 'text', rows }) {
       </label>
       <Tag
         id={id}
+        name={id}
         type={type}
         rows={rows}
+        required
         onFocus={() => setFocused(true)}
         onBlur={(e) => !e.target.value && setFocused(false)}
         className="w-full bg-transparent border-b-2 border-white/10 focus:border-accent outline-none text-white font-body py-3 text-sm resize-none transition-colors duration-200 placeholder-transparent"
@@ -43,10 +45,42 @@ function Field({ label, id, type = 'text', rows }) {
 
 export default function ContactSection() {
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSent(true);
+    setLoading(true);
+    
+    const formData = new FormData(e.target);
+    
+    // Web3Forms Access Key
+    formData.append("access_key", "YOUR_ACCESS_KEY_HERE");
+
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
+
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: json
+      });
+      const data = await res.json();
+      
+      if (data.success) {
+        setSent(true);
+      } else {
+        alert("Something went wrong! Please try again.");
+      }
+    } catch (error) {
+      console.error("Form submission error", error);
+      alert("Failed to send message.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -132,11 +166,12 @@ export default function ContactSection() {
                 <Field label="Message" id="message" rows={4} />
                 <motion.button
                   type="submit"
+                  disabled={loading}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full py-4 bg-accent text-white font-semibold rounded-xl font-body glow-sm hover:glow-accent transition-all duration-300 relative overflow-hidden group"
+                  className="w-full py-4 bg-accent text-white font-semibold rounded-xl font-body glow-sm hover:glow-accent transition-all duration-300 relative overflow-hidden group disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  <span className="relative z-10">Send Message →</span>
+                  <span className="relative z-10">{loading ? 'Sending...' : 'Send Message →'}</span>
                   <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500" />
                 </motion.button>
               </form>
