@@ -1,0 +1,8 @@
+Title: Organ Availability Alert System
+Tech: React, Node.js, MySQL
+Year: 2025
+GitHub: https://github.com/nethmina/organ-alert
+Live: https://organalert.app
+
+Description:
+A comprehensive system designed to reduce organ wastage by instantly alerting hospitals and doctors when donor organs become available. Built with a fast React frontend, secure Node backend, and optimized MySQL database for matching algorithms.

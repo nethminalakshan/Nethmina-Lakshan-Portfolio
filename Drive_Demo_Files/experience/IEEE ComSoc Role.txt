@@ -1,0 +1,9 @@
+Title: Webmaster – IEEE Communication Society
+Company: University of Ruhuna
+Duration: 2025 – Present
+
+Description:
+* Managed and maintained the official society website
+* Designed complete UI/UX improvements resulting in a 40% increase in student engagement
+* Collaborated closely with technical teams to deploy event pages
+* Implemented modern CI/CD pipelines for zero-downtime updates

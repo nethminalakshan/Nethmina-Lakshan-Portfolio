@@ -1,10 +1,8 @@
 import { useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useDriveProjects } from '../../hooks/useDriveProjects';
 import { fadeUp, stagger } from '../AboutSection/AboutSection';
 
-/* ── 3D Tilt Card ────────────────────────────────────────────── */
 const ACCENT_COLORS = [
   { from: '#7c3aed', to: '#38bdf8' },
   { from: '#10b981', to: '#38bdf8' },
@@ -19,7 +17,6 @@ function ProjectCard({ project, index }) {
   const y = useMotionValue(0);
   const rotX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]),  { stiffness: 200, damping: 20 });
   const rotY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]),  { stiffness: 200, damping: 20 });
-  const glow = useSpring(useTransform(x, [-0.5, 0.5], [0, 1]),   { stiffness: 200, damping: 20 });
 
   const colors = ACCENT_COLORS[index % ACCENT_COLORS.length];
 
@@ -38,9 +35,9 @@ function ProjectCard({ project, index }) {
       style={{ rotateX: rotX, rotateY: rotY, transformStyle: 'preserve-3d', perspective: 800 }}
       whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.3 }}
-      className="relative group cursor-pointer"
+      className="relative group cursor-pointer h-full"
     >
-      <div className="relative glass rounded-2xl overflow-hidden border border-white/5 hover:border-accent/30 transition-all duration-300 h-full">
+      <div className="relative glass rounded-2xl overflow-hidden border border-white/5 hover:border-accent/30 transition-all duration-300 h-full flex flex-col">
         {/* Gradient top bar */}
         <div
           className="h-1.5 w-full"
@@ -55,14 +52,14 @@ function ProjectCard({ project, index }) {
 
         {/* Preview area */}
         <div
-          className="h-44 flex items-center justify-center relative overflow-hidden group/img"
+          className="h-48 flex items-center justify-center relative overflow-hidden group/img shrink-0"
           style={{ background: `linear-gradient(135deg, ${colors.from}15, ${colors.to}15)` }}
         >
           {project.imageUrl ? (
             <img 
               src={project.imageUrl} 
               alt={project.title}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-110"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover/img:scale-110"
               loading="lazy"
             />
           ) : (
@@ -80,33 +77,48 @@ function ProjectCard({ project, index }) {
           />
         </div>
 
-        <div className="p-6">
-          <h3 className="font-display font-bold text-white text-lg mb-2 group-hover:text-gradient transition-all duration-300">
-            {project.title}
-          </h3>
-          <p className="text-white/50 text-sm font-body leading-relaxed mb-5 line-clamp-2">
+        <div className="p-6 flex flex-col flex-1">
+          <div className="flex justify-between items-start gap-4 mb-2">
+            <h3 className="font-display font-bold text-white text-lg group-hover:text-gradient transition-all duration-300">
+              {project.title}
+            </h3>
+            {project.year && (
+              <span className="text-xs font-bold text-white/30 bg-white/5 px-2 py-1 rounded-md">
+                {project.year}
+              </span>
+            )}
+          </div>
+          
+          <p className="text-white/50 text-sm font-body leading-relaxed mb-5 line-clamp-3 flex-1">
             {project.description}
           </p>
 
-          {/* Tags */}
-          {project.tags && (
+          {/* Tech Tags */}
+          {project.tech && (
             <div className="flex flex-wrap gap-1.5 mb-5">
-              {project.tags.slice(0, 3).map((tag) => (
-                <span key={tag} className="px-2 py-0.5 text-xs rounded-md bg-white/5 text-white/50 border border-white/8">
-                  {tag}
+              {project.tech.map((t) => (
+                <span key={t} className="px-2 py-0.5 text-xs rounded-md bg-white/5 text-white/50 border border-white/8">
+                  {t}
                 </span>
               ))}
             </div>
           )}
 
-          <Link
-            to={`/projects/${project.id}`}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold transition-all duration-200 group/link"
-            style={{ color: colors.from }}
-          >
-            View Details
-            <span className="transition-transform duration-200 group-hover/link:translate-x-1">→</span>
-          </Link>
+          <div className="flex items-center gap-4 mt-auto pt-2 border-t border-white/5">
+            {project.github && (
+              <a href={project.github} target="_blank" rel="noreferrer" className="text-sm font-semibold text-white/50 hover:text-white transition-colors">
+                GitHub ↗
+              </a>
+            )}
+            {project.live && (
+              <a href={project.live} target="_blank" rel="noreferrer" className="text-sm font-semibold text-white/50 hover:text-cyan transition-colors">
+                Live App ↗
+              </a>
+            )}
+            {!project.github && !project.live && (
+              <span className="text-sm font-semibold text-white/30">Details inside</span>
+            )}
+          </div>
         </div>
       </div>
     </motion.div>
@@ -114,9 +126,7 @@ function ProjectCard({ project, index }) {
 }
 
 /* ── Projects Section ────────────────────────────────────────── */
-export default function ProjectsSection() {
-  const { projects, loading } = useDriveProjects();
-
+export default function ProjectsSection({ projects, loading }) {
   return (
     <section id="projects" className="relative py-28 bg-surface overflow-hidden">
       {/* Glow */}
@@ -143,7 +153,7 @@ export default function ProjectsSection() {
           </motion.h2>
           <motion.p variants={fadeUp} className="text-white/45 font-body mt-3 max-w-xl">
             A selection of projects spanning networking, embedded systems, and web development.
-            (Loaded live from Google Drive).
+            (Managed directly via Google Drive).
           </motion.p>
         </motion.div>
 
@@ -158,7 +168,7 @@ export default function ProjectsSection() {
         {!loading && projects.length === 0 && (
           <div className="text-center py-20 glass rounded-2xl">
             <p className="text-white/50 mb-2">No projects found.</p>
-            <p className="text-sm text-white/30">Upload images to your Google Drive folder to see them here!</p>
+            <p className="text-sm text-white/30">Upload to the "projects" folder in Drive!</p>
           </div>
         )}
 
@@ -167,10 +177,10 @@ export default function ProjectsSection() {
           <motion.div
             initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.1 }}
             variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}
-            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch"
           >
             {projects.map((project, i) => (
-              <motion.div key={project.id} variants={fadeUp}>
+              <motion.div key={project.title} variants={fadeUp} className="h-full">
                 <ProjectCard project={project} index={i} />
               </motion.div>
             ))}

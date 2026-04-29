@@ -1,0 +1,6 @@
+Title: MoraXtreme Competitive Programming Hackathon
+Year: 2025
+Organization: IEEE Student Branch
+
+Description:
+Participated as Team Aura in an intensive 24-hour competitive programming competition. Successfully solved complex real-world algorithmic challenges under high pressure, demonstrating strong teamwork, data structures knowledge, and rapid prototyping skills.
