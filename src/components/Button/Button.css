@@ -1,19 +1,49 @@
 .btn {
   border: 0;
   border-radius: 999px;
-  padding: 0.65rem 1.05rem;
+  padding: 0.68rem 1.25rem;
   font-weight: 700;
-  cursor: pointer;
+  font-size: 0.95rem;
+  cursor: none; /* keep custom cursor */
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
   white-space: nowrap;
-  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+  position: relative;
+  overflow: hidden;
+  transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 200ms ease,
+    background 200ms ease,
+    border-color 200ms ease;
+}
+
+/* Shimmer sweep on hover */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 80%
+  );
+  transform: translateX(-100%);
+  transition: transform 500ms ease;
+  pointer-events: none;
+}
+
+.btn:hover::before {
+  transform: translateX(100%);
+}
+
+.btn:hover {
+  transform: translateY(-2px) scale(1.03);
 }
 
 .btn:active {
-  transform: translateY(1px);
+  transform: translateY(1px) scale(0.98);
 }
 
 .btn:focus-visible {
@@ -21,22 +51,31 @@
   outline-offset: 3px;
 }
 
+/* ── Primary ── */
 .btnPrimary {
-  background: var(--accent);
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
   color: #fff;
-  box-shadow: 0 10px 22px rgba(124, 58, 237, 0.22);
+  box-shadow: 0 10px 28px rgba(124, 58, 237, 0.35),
+    0 0 0 0px rgba(124, 58, 237, 0.4);
+  transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 300ms ease;
 }
 
 .btnPrimary:hover {
-  background: var(--accent2);
+  box-shadow: 0 16px 40px rgba(124, 58, 237, 0.45),
+    0 0 0 4px rgba(124, 58, 237, 0.12);
 }
 
+/* ── Ghost ── */
 .btnGhost {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
   color: rgba(15, 23, 42, 0.92);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.07);
 }
 
 .btnGhost:hover {
-  border-color: rgba(15, 23, 42, 0.18);
+  border-color: rgba(124, 58, 237, 0.3);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.12);
 }

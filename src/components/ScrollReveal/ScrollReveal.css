@@ -1,0 +1,40 @@
+/* ─── Scroll Reveal Animations ───────────────────────────────────── */
+
+.revealWrapper {
+  opacity: 0;
+  transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* ── Variants (hidden state) ── */
+.reveal-fadeUp {
+  transform: translateY(36px);
+}
+
+.reveal-fadeLeft {
+  transform: translateX(-40px);
+}
+
+.reveal-fadeRight {
+  transform: translateX(40px);
+}
+
+.reveal-scaleIn {
+  transform: scale(0.92);
+}
+
+/* ── Visible state ── */
+.revealVisible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .revealWrapper {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
