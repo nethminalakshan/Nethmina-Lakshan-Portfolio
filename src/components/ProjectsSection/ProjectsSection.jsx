@@ -1,15 +1,19 @@
+"use client";
+
 import { useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import { fadeUp, stagger } from '../AboutSection/AboutSection';
+import PropTypes from 'prop-types';
 
-const ACCENT_COLORS = [
-  { from: '#7c3aed', to: '#38bdf8' },
-  { from: '#10b981', to: '#38bdf8' },
-  { from: '#f59e0b', to: '#ec4899' },
-  { from: '#ec4899', to: '#7c3aed' },
-  { from: '#38bdf8', to: '#10b981' },
-];
+const projectShape = PropTypes.shape({
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string,
+  imageUrl: PropTypes.string,
+  year: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  tech: PropTypes.arrayOf(PropTypes.string),
+  github: PropTypes.string,
+  live: PropTypes.string,
+});
 
 function ProjectCard({ project, index }) {
   const cardRef = useRef(null);
@@ -17,8 +21,6 @@ function ProjectCard({ project, index }) {
   const y = useMotionValue(0);
   const rotX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]),  { stiffness: 200, damping: 20 });
   const rotY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]),  { stiffness: 200, damping: 20 });
-
-  const colors = ACCENT_COLORS[index % ACCENT_COLORS.length];
 
   const onMove = (e) => {
     const rect = cardRef.current.getBoundingClientRect();
@@ -37,24 +39,10 @@ function ProjectCard({ project, index }) {
       transition={{ duration: 0.3 }}
       className="relative group cursor-pointer h-full"
     >
-      <div className="relative glass rounded-2xl overflow-hidden border border-white/5 hover:border-accent/30 transition-all duration-300 h-full flex flex-col">
-        {/* Gradient top bar */}
-        <div
-          className="h-1.5 w-full"
-          style={{ background: `linear-gradient(90deg, ${colors.from}, ${colors.to})` }}
-        />
-
-        {/* Card glow on hover */}
-        <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl"
-          style={{ boxShadow: `0 0 40px ${colors.from}33` }}
-        />
+      <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/10 hover:border-white/20 transition-colors duration-300 h-full flex flex-col">
 
         {/* Preview area */}
-        <div
-          className="h-48 flex items-center justify-center relative overflow-hidden group/img shrink-0"
-          style={{ background: `linear-gradient(135deg, ${colors.from}15, ${colors.to}15)` }}
-        >
+        <div className="h-48 flex items-center justify-center relative overflow-hidden group/img shrink-0 bg-white/5">
           {project.imageUrl ? (
             <img 
               src={project.imageUrl} 
@@ -64,22 +52,16 @@ function ProjectCard({ project, index }) {
             />
           ) : (
             <span
-              className="font-display font-black text-6xl select-none opacity-20"
-              style={{ color: colors.from }}
+              className="font-display font-semibold text-6xl select-none text-white/10"
             >
               {String(index + 1).padStart(2, '0')}
             </span>
           )}
-          {/* Floating icon-like shape overlay */}
-          <div
-            className="absolute top-4 right-4 w-8 h-8 rounded-xl opacity-80 shadow-lg"
-            style={{ background: `linear-gradient(135deg, ${colors.from}, ${colors.to})` }}
-          />
         </div>
 
         <div className="p-6 flex flex-col flex-1">
           <div className="flex justify-between items-start gap-4 mb-2">
-            <h3 className="font-display font-bold text-white text-lg group-hover:text-gradient transition-all duration-300">
+            <h3 className="font-display font-bold text-white text-lg transition-colors duration-300">
               {project.title}
             </h3>
             {project.year && (
@@ -104,14 +86,14 @@ function ProjectCard({ project, index }) {
             </div>
           )}
 
-          <div className="flex items-center gap-4 mt-auto pt-2 border-t border-white/5">
+          <div className="flex items-center gap-4 mt-auto pt-2 border-t border-white/10">
             {project.github && (
-              <a href={project.github} target="_blank" rel="noreferrer" className="text-sm font-semibold text-white/50 hover:text-white transition-colors">
+              <a href={project.github} target="_blank" rel="noreferrer" className="text-sm font-semibold text-white/55 hover:text-white transition-colors">
                 GitHub ↗
               </a>
             )}
             {project.live && (
-              <a href={project.live} target="_blank" rel="noreferrer" className="text-sm font-semibold text-white/50 hover:text-cyan transition-colors">
+              <a href={project.live} target="_blank" rel="noreferrer" className="text-sm font-semibold text-white/55 hover:text-white transition-colors">
                 Live App ↗
               </a>
             )}
@@ -125,12 +107,16 @@ function ProjectCard({ project, index }) {
   );
 }
 
+ProjectCard.propTypes = {
+  project: projectShape.isRequired,
+  index: PropTypes.number.isRequired,
+};
+
 /* ── Projects Section ────────────────────────────────────────── */
 export default function ProjectsSection({ projects, loading }) {
   return (
-    <section id="projects" className="relative py-28 bg-surface overflow-hidden">
-      {/* Glow */}
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-96 h-96 bg-cyan/6 rounded-full blur-[100px] pointer-events-none" />
+    <section id="projects" className="relative py-28 overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-black/10 to-transparent" />
 
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
@@ -140,16 +126,16 @@ export default function ProjectsSection({ projects, loading }) {
           className="mb-16"
         >
           <motion.div variants={fadeUp} className="flex items-center gap-3 mb-6">
-            <span className="text-accent font-display font-bold text-sm tracking-widest uppercase">02</span>
-            <div className="h-px flex-1 max-w-xs bg-gradient-to-r from-accent/40 to-transparent" />
-            <span className="text-white/30 text-sm font-body">Projects</span>
+            <span className="text-white/60 font-body font-medium text-xs tracking-[0.25em] uppercase">02</span>
+            <div className="h-px flex-1 max-w-xs bg-white/10" />
+            <span className="text-white/35 text-xs font-body tracking-[0.25em] uppercase">Projects</span>
           </motion.div>
           <motion.h2
             variants={fadeUp}
             className="font-display font-black text-white"
             style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.03em' }}
           >
-            Things I've <span className="text-gradient">built</span>
+            Things I've built
           </motion.h2>
           <motion.p variants={fadeUp} className="text-white/45 font-body mt-3 max-w-xl">
             A selection of projects spanning networking, embedded systems, and web development.
@@ -160,7 +146,7 @@ export default function ProjectsSection({ projects, loading }) {
         {/* Loading State */}
         {loading && (
           <div className="flex justify-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white/40"></div>
           </div>
         )}
 
@@ -190,3 +176,13 @@ export default function ProjectsSection({ projects, loading }) {
     </section>
   );
 }
+
+ProjectsSection.propTypes = {
+  projects: PropTypes.arrayOf(projectShape),
+  loading: PropTypes.bool,
+};
+
+ProjectsSection.defaultProps = {
+  projects: [],
+  loading: false,
+};

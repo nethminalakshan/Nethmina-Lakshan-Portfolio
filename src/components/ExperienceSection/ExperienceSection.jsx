@@ -1,12 +1,15 @@
+"use client";
+
 import { motion } from 'framer-motion';
 import { fadeUp, stagger } from '../AboutSection/AboutSection';
+import PropTypes from 'prop-types';
 
 export default function ExperienceSection({ experience, loading }) {
   if (!loading && (!experience || experience.length === 0)) return null;
 
   return (
-    <section id="experience" className="relative py-28 bg-dark overflow-hidden">
-      <div className="absolute left-0 top-1/3 w-96 h-96 bg-accent/5 rounded-full blur-[100px] pointer-events-none" />
+    <section id="experience" className="relative py-28 overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-black/10 to-transparent" />
 
       <div className="max-w-4xl mx-auto px-6">
         <motion.div
@@ -19,13 +22,13 @@ export default function ExperienceSection({ experience, loading }) {
             className="font-display font-black text-white"
             style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.03em' }}
           >
-            My <span className="text-gradient">Experience</span>
+            My Experience
           </motion.h2>
         </motion.div>
 
         {loading ? (
           <div className="flex justify-center py-10">
-             <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-accent"></div>
+             <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-white/40"></div>
           </div>
         ) : (
           <div className="relative border-l border-white/10 ml-4 md:ml-0 md:border-l-0">
@@ -45,17 +48,17 @@ export default function ExperienceSection({ experience, loading }) {
                     className={`relative flex flex-col md:flex-row gap-8 items-start md:items-center ${isEven ? 'md:flex-row-reverse' : ''}`}
                   >
                     {/* Node on timeline */}
-                    <div className="absolute -left-[5px] md:left-1/2 md:-translate-x-1/2 w-[10px] h-[10px] rounded-full bg-accent ring-4 ring-dark z-10" />
+                    <div className="absolute -left-[5px] md:left-1/2 md:-translate-x-1/2 w-[10px] h-[10px] rounded-full bg-white ring-4 ring-dark/80 z-10" />
 
                     {/* Content Card */}
                     <div className="w-full md:w-1/2 flex pl-6 md:pl-0">
-                      <div className={`glass p-6 rounded-2xl border border-white/5 w-full hover:border-accent/20 transition-all ${isEven ? 'md:mr-10' : 'md:ml-10'}`}>
+                      <div className={`bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10 w-full hover:border-white/20 transition-colors ${isEven ? 'md:mr-10' : 'md:ml-10'}`}>
                         {exp.imageUrl && (
                           <div className="h-32 w-full mb-4 rounded-xl overflow-hidden bg-white/5">
                             <img src={exp.imageUrl} alt={exp.title} className="w-full h-full object-cover" />
                           </div>
                         )}
-                        <span className="text-accent font-semibold text-sm mb-2 block">{exp.duration}</span>
+                        <span className="text-white/60 font-semibold text-sm mb-2 block tracking-wide">{exp.duration}</span>
                         <h3 className="font-display font-bold text-white text-xl mb-1">{exp.title}</h3>
                         <p className="text-white/60 font-medium text-sm mb-4">{exp.company}</p>
                         
@@ -74,3 +77,21 @@ export default function ExperienceSection({ experience, loading }) {
     </section>
   );
 }
+
+const experienceShape = PropTypes.shape({
+  title: PropTypes.string.isRequired,
+  company: PropTypes.string,
+  duration: PropTypes.string,
+  description: PropTypes.string,
+  imageUrl: PropTypes.string,
+});
+
+ExperienceSection.propTypes = {
+  experience: PropTypes.arrayOf(experienceShape),
+  loading: PropTypes.bool,
+};
+
+ExperienceSection.defaultProps = {
+  experience: [],
+  loading: false,
+};

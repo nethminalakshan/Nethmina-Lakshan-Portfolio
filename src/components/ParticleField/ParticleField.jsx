@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef } from "react";
 import "./ParticleField.css";
 
@@ -11,27 +13,16 @@ export default function ParticleField() {
     const canvas = canvasRef.current;
     const ctx    = canvas.getContext("2d");
     let raf;
-    let W, H;
-
-    // ── Palette matching Antigravity screenshot ──────────────
-    const COLORS = [
-      "#4285F4", // Google blue
-      "#EA4335", // Google red
-      "#FBBC05", // Google yellow
-      "#34A853", // Google green
-      "#AB47BC", // purple
-      "#FF7043", // orange
-      "#26C6DA", // cyan
-    ];
+    let W, H, DPR;
 
     // ── Config ───────────────────────────────────────────────
-    const COUNT        = 180;   // number of dots
-    const REPEL_RADIUS = 120;   // px — cursor influence radius
-    const REPEL_FORCE  = 5.5;   // how hard dots are pushed away
-    const RETURN_SPEED = 0.055; // spring back to home (lerp)
-    const FRICTION     = 0.82;  // velocity damping
-    const DOT_MIN      = 3;     // min radius px
-    const DOT_MAX      = 6;     // max radius px
+    const COUNT        = 520;   // number of dots
+    const REPEL_RADIUS = 140;   // px — cursor influence radius
+    const REPEL_FORCE  = 2.8;   // how hard dots are pushed away
+    const RETURN_SPEED = 0.03;  // spring back to home (lerp)
+    const FRICTION     = 0.88;  // velocity damping
+    const DOT_MIN      = 0.8;   // min radius px
+    const DOT_MAX      = 1.9;   // max radius px
 
     let mouse = { x: -9999, y: -9999 };
     let particles = [];
@@ -39,8 +30,16 @@ export default function ParticleField() {
     function rand(a, b) { return Math.random() * (b - a) + a; }
 
     function resize() {
-      W = canvas.width  = window.innerWidth;
-      H = canvas.height = window.innerHeight;
+      W = window.innerWidth;
+      H = window.innerHeight;
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+      canvas.width  = Math.floor(W * DPR);
+      canvas.height = Math.floor(H * DPR);
+      canvas.style.width = `${W}px`;
+      canvas.style.height = `${H}px`;
+
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     }
 
     function initParticles() {
@@ -58,8 +57,7 @@ export default function ParticleField() {
           vx: 0,
           vy: 0,
           r: rand(DOT_MIN, DOT_MAX),
-          color: COLORS[Math.floor(Math.random() * COLORS.length)],
-          opacity: rand(0.55, 1.0),
+          opacity: rand(0.25, 0.95),
         });
       }
     }
@@ -77,6 +75,13 @@ export default function ParticleField() {
 
     function draw() {
       ctx.clearRect(0, 0, W, H);
+
+      // soft vignette (very subtle)
+      const grad = ctx.createRadialGradient(W * 0.5, H * 0.55, 0, W * 0.5, H * 0.55, Math.max(W, H) * 0.7);
+      grad.addColorStop(0, "rgba(255,255,255,0.02)");
+      grad.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
 
       for (const p of particles) {
         // ── Cursor repulsion ─────────────────────────────────
@@ -104,27 +109,18 @@ export default function ParticleField() {
         p.y += p.vy;
 
         // ── Draw dot ─────────────────────────────────────────
-        const speed   = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-        const glowing = speed > 0.5; // add glow when moving fast
+        const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        const glowing = speed > 0.35;
 
-        if (glowing) {
-          ctx.shadowColor = p.color;
-          ctx.shadowBlur  = Math.min(speed * 3, 18);
-        }
+        ctx.shadowColor = "rgba(255,255,255,0.65)";
+        ctx.shadowBlur  = glowing ? Math.min(speed * 10, 14) : 0;
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r + (glowing ? speed * 0.3 : 0), 0, Math.PI * 2);
-        ctx.fillStyle = p.color
-          .replace(")", `, ${p.opacity})`)
-          .replace("rgb", "rgba");
-        // hex fallback — just use full opacity with globalAlpha
-        ctx.globalAlpha = p.opacity + (glowing ? Math.min(speed * 0.05, 0.3) : 0);
+        ctx.fillStyle = "rgb(255,255,255)";
+        ctx.globalAlpha = p.opacity + (glowing ? Math.min(speed * 0.12, 0.4) : 0);
         ctx.fill();
         ctx.globalAlpha = 1;
-
-        if (glowing) {
-          ctx.shadowBlur = 0;
-        }
       }
 
       raf = requestAnimationFrame(draw);
@@ -137,13 +133,14 @@ export default function ParticleField() {
 
     window.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mouseleave", onMouseLeave);
-    window.addEventListener("resize", () => { resize(); initParticles(); });
+    const onResize = () => { resize(); initParticles(); };
+    window.addEventListener("resize", onResize);
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseleave", onMouseLeave);
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", onResize);
     };
   }, []);
 

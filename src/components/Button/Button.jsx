@@ -1,5 +1,7 @@
+"use client";
+
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { cn } from "../../utils/helpers";
 import "./Button.css";
 
@@ -20,7 +22,7 @@ export default function Button({
 
   if (to) {
     return (
-      <Link to={to} className={classes} {...rest}>
+      <Link href={to} className={classes} {...rest}>
         {children}
       </Link>
     );

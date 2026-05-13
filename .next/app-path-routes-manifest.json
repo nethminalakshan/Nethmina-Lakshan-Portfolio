@@ -1,0 +1,6 @@
+{
+  "/api/cms/route": "/api/cms",
+  "/api/drive/media/route": "/api/drive/media",
+  "/_not-found/page": "/_not-found",
+  "/page": "/"
+}

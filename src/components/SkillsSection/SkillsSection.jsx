@@ -1,14 +1,17 @@
+"use client";
+
 import { motion } from 'framer-motion';
 import { fadeUp, stagger } from '../AboutSection/AboutSection';
+import PropTypes from 'prop-types';
 
 const SKILLS = [
-  { category: 'Networking',       color: '#7c3aed', items: ['TCP/IP','Routing & Switching','Subnetting','Packet Tracer','Wireshark','VLANs','OSPF','BGP'] },
-  { category: 'Embedded Systems', color: '#10b981', items: ['Arduino','STM32','Sensors','I2C / SPI','UART','FreeRTOS','PWM','ADC'] },
-  { category: 'Programming',      color: '#38bdf8', items: ['C / C++','Python','JavaScript','TypeScript','React','Node.js','SQL','Bash'] },
-  { category: 'Tools & DevOps',   color: '#f59e0b', items: ['Git','Docker','Linux','VS Code','Figma','Postman','Jenkins','AWS'] },
+  { category: 'Networking',       items: ['TCP/IP','Routing & Switching','Subnetting','Packet Tracer','Wireshark','VLANs','OSPF','BGP'] },
+  { category: 'Embedded Systems', items: ['Arduino','STM32','Sensors','I2C / SPI','UART','FreeRTOS','PWM','ADC'] },
+  { category: 'Programming',      items: ['C / C++','Python','JavaScript','TypeScript','React','Node.js','SQL','Bash'] },
+  { category: 'Tools & DevOps',   items: ['Git','Docker','Linux','VS Code','Figma','Postman','Jenkins','AWS'] },
 ];
 
-function SkillBubble({ skill, color, delay }) {
+function SkillBubble({ skill, delay }) {
   return (
     <motion.span
       initial={{ opacity: 0, scale: 0.7 }}
@@ -16,22 +19,22 @@ function SkillBubble({ skill, color, delay }) {
       viewport={{ once: true }}
       transition={{ delay, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       whileHover={{ scale: 1.1, y: -3 }}
-      className="inline-flex px-3 py-1.5 rounded-xl text-sm font-semibold border transition-all duration-200 cursor-default"
-      style={{
-        color,
-        borderColor: `${color}30`,
-        backgroundColor: `${color}0d`,
-      }}
+      className="inline-flex px-3 py-1.5 rounded-xl text-sm font-semibold border border-white/10 bg-white/5 text-white/65 transition-colors duration-200 cursor-default hover:bg-white/8 hover:border-white/20"
     >
       {skill}
     </motion.span>
   );
 }
 
+SkillBubble.propTypes = {
+  skill: PropTypes.string.isRequired,
+  delay: PropTypes.number.isRequired,
+};
+
 export default function SkillsSection() {
   return (
-    <section id="skills" className="relative py-28 bg-dark overflow-hidden">
-      <div className="absolute left-1/2 top-0 -translate-x-1/2 w-[600px] h-48 bg-accent/6 rounded-full blur-[80px] pointer-events-none" />
+    <section id="skills" className="relative py-28 overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-black/10 to-transparent" />
 
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
@@ -41,16 +44,16 @@ export default function SkillsSection() {
           className="mb-16"
         >
           <motion.div variants={fadeUp} className="flex items-center gap-3 mb-6">
-            <span className="text-accent font-display font-bold text-sm tracking-widest uppercase">03</span>
-            <div className="h-px flex-1 max-w-xs bg-gradient-to-r from-accent/40 to-transparent" />
-            <span className="text-white/30 text-sm font-body">Skills</span>
+            <span className="text-white/60 font-body font-medium text-xs tracking-[0.25em] uppercase">03</span>
+            <div className="h-px flex-1 max-w-xs bg-white/10" />
+            <span className="text-white/35 text-xs font-body tracking-[0.25em] uppercase">Skills</span>
           </motion.div>
           <motion.h2
             variants={fadeUp}
             className="font-display font-black text-white"
             style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.03em' }}
           >
-            My <span className="text-gradient">toolkit</span>
+            My toolkit
           </motion.h2>
         </motion.div>
 
@@ -62,12 +65,11 @@ export default function SkillsSection() {
               initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }}
               variants={fadeUp}
               transition={{ delay: gi * 0.1 }}
-              className="glass rounded-2xl p-6"
+              className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
             >
               {/* Category header */}
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-2 h-8 rounded-full" style={{ backgroundColor: group.color }} />
-                <h3 className="font-display font-bold text-white text-base">{group.category}</h3>
+                <h3 className="font-body font-semibold text-white/80 text-xs tracking-[0.25em] uppercase">{group.category}</h3>
               </div>
 
               {/* Bubbles */}
@@ -76,7 +78,6 @@ export default function SkillsSection() {
                   <SkillBubble
                     key={skill}
                     skill={skill}
-                    color={group.color}
                     delay={gi * 0.06 + si * 0.04}
                   />
                 ))}
